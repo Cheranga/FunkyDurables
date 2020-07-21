@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Funky.Durables.Core;
 using Funky.Durables.Extensions;
-using Funky.Durables.Patterns.Monitor;
+using Funky.Durables.Orchestrators;
 using Funky.Durables.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,42 +20,14 @@ namespace Funky.Durables.Patterns.FunctionChaining
         {
             var fileRecordsRequest = await request.GetModel<FileRecordsRequest>();
 
-            await client.StartNewAsync(nameof(ClassifyOrdersOrchestratorFunction), fileRecordsRequest);
+            var instanceId = Guid.NewGuid().ToString("N");
 
-            return new OkResult();
+            await client.StartNewAsync(nameof(ClassifyOrdersOrchestratorFunction), instanceId, fileRecordsRequest);
+
+            var actionResult = await client.WaitForCompletionOrCreateCheckStatusResponseAsync(request, instanceId, TimeSpan.FromSeconds(2));
+
+            return actionResult;
         }
 
-    }
-
-    public class ClassifyOrdersOrchestratorFunction
-    {
-        [FunctionName(nameof(ClassifyOrdersOrchestratorFunction))]
-        public async Task OrchestrateAsync([OrchestrationTrigger]IDurableOrchestrationContext context)
-        {
-            var fileRecordsRequest = context.GetInput<FileRecordsRequest>();
-
-            var fileInformation = await context.CallActivityAsync<FileInformation>(nameof(ClassifyFileRecordsActivityFunction), fileRecordsRequest);
-
-            var insertValidRecordsOperation = await context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), fileInformation.ValidRecords);
-        }
-    }
-
-    public class ClassifyFileRecordsActivityFunction
-    {
-        [FunctionName(nameof(ClassifyFileRecordsActivityFunction))]
-        public async Task<FileInformation> ClassifyAsync([ActivityTrigger]IDurableActivityContext context)
-        {
-            var fileRecordsRequest = context.GetInput<FileRecordsRequest>();
-            await Task.Delay(TimeSpan.FromSeconds(3));
-            //
-            // TODO: Classify the records
-            //
-            return new FileInformation
-            {
-                ValidRecords = new List<FileRecord>(),
-                InvalidRecords = new List<FileRecord>(),
-                InvalidRowRecords = new List<FileRecord>()
-            };
-        }
     }
 }

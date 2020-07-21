@@ -80,19 +80,7 @@ namespace Funky.Durables.Patterns.Monitor
         }
     }
 
-    public class InsertFileRecordActivityFunction
-    {
-        [FunctionName(nameof(InsertFileRecordActivityFunction))]
-        public async Task<Result> InsertAsync([ActivityTrigger] IDurableActivityContext context,
-            [DurableClient]IDurableClient client)
-        {
-            var records = context.GetInput<List<FileRecord>>();
-            //
-            // TODO: Insert records
-            //
-            return Result.Success();
-        }
-    }
+   
 
     public class DeleteBlobMonitorFunction
     {

@@ -6,6 +6,7 @@
   <ItemGroup>
     <Compile Remove="Function1.cs" />
     <Compile Remove="Function2.cs" />
+    <Compile Remove="Patterns\Monitor\DeleteBlobActivityFunction.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.0.0" />
@@ -21,5 +22,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Patterns\Monitor\" />
   </ItemGroup>
 </Project>
