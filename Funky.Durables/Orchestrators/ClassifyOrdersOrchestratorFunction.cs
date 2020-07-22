@@ -22,8 +22,15 @@ namespace Funky.Durables.Orchestrators
             var fileInformation = await context.CallActivityAsync<CustomerFileInformation>(nameof(ClassifyFileRecordsActivityFunction), fileRecordsRequest);
 
             var validRecordsCommand = GetCommand("valid", fileInformation.ValidRecords);
+            var invalidRecordsCommand = GetCommand("invalid", fileInformation.InvalidRecords);
+            var invalidRowRecordsCommand = GetCommand("invalidrows", fileInformation.InvalidRowRecords);
 
-            await context.CallSubOrchestratorAsync<Result>(nameof(InsertDataOrchestrator), validRecordsCommand);
+            var taskValidRecords = context.CallSubOrchestratorAsync<Result>(nameof(InsertDataOrchestrator), validRecordsCommand);
+            var taskInvalidRecords = context.CallSubOrchestratorAsync<Result>(nameof(InsertDataOrchestrator), invalidRecordsCommand);
+            var taskInvalidRowRecords = context.CallSubOrchestratorAsync<Result>(nameof(InsertDataOrchestrator), invalidRowRecordsCommand);
+
+            await Task.WhenAll(taskValidRecords, taskInvalidRecords, taskInvalidRowRecords);
+
 
             //var insertValidRecordsOperation = await context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), fileInformation.ValidRecords);
         }
