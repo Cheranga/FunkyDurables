@@ -4,7 +4,7 @@ using Funky.Durables.Models;
 
 namespace Funky.Durables.Validators
 {
-    public class FileRecordValidator : ModelValidatorBase<FileRecord>
+    public class FileRecordValidator : ModelValidatorBase<CustomerFileRecord>
     {
         public FileRecordValidator()
         {

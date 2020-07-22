@@ -14,7 +14,7 @@ namespace Funky.Durables.Tests
         public void Test1()
         {
             var fixture = new Fixture();
-            var fileRecords = fixture.CreateMany<FileRecord>(1000).ToList();
+            var fileRecords = fixture.CreateMany<CustomerFileRecord>(1000).ToList();
             var request = new FileRecordsRequest
             {
                 Records = fileRecords

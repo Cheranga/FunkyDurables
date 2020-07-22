@@ -12,21 +12,21 @@ namespace Funky.Durables.Activities
 {
     public class ClassifyFileRecordsActivityFunction
     {
-        private readonly IValidator<FileRecord> _validator;
+        private readonly IValidator<CustomerFileRecord> _validator;
 
-        public ClassifyFileRecordsActivityFunction(IValidator<FileRecord> validator)
+        public ClassifyFileRecordsActivityFunction(IValidator<CustomerFileRecord> validator)
         {
             _validator = validator;
         }
 
         [FunctionName(nameof(ClassifyFileRecordsActivityFunction))]
-        public Task<FileInformation> ClassifyAsync([ActivityTrigger]IDurableActivityContext context)
+        public Task<CustomerFileInformation> ClassifyAsync([ActivityTrigger]IDurableActivityContext context)
         {
             var fileRecordsRequest = context.GetInput<FileRecordsRequest>();
 
-            var validRecords = new List<FileRecord>();
-            var invalidRecords = new List<FileRecord>();
-            var invalidRowRecords = new List<FileRecord>();
+            var validRecords = new List<CustomerFileRecord>();
+            var invalidRecords = new List<CustomerFileRecord>();
+            var invalidRowRecords = new List<CustomerFileRecord>();
 
             foreach (var fileRecord in fileRecordsRequest.Records)
             {
@@ -45,7 +45,7 @@ namespace Funky.Durables.Activities
                 }
             }
 
-            var fileInformation = new FileInformation
+            var fileInformation = new CustomerFileInformation
             {
                 ValidRecords = validRecords,
                 InvalidRecords = invalidRecords,

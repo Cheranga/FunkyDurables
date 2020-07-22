@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Funky.Durables.Models;
-using Funky.Durables.Patterns.FunctionChaining;
 
-namespace Funky.Durables.Requests
+namespace Funky.Durables.DataAccess.Commands
 {
-    public class FileRecordsRequest
+    public class InsertCustomerDataCommand
     {
+        public string Category { get; set; }
         public List<CustomerFileRecord> Records { get; set; }
     }
 }

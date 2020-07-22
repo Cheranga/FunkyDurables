@@ -1,26 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Funky.Durables.Core;
-using Funky.Durables.Models;
+using Funky.Durables.DataAccess;
+using Funky.Durables.DataAccess.CommandHandlers;
+using Funky.Durables.DataAccess.Models;
+using Microsoft.Azure.Cosmos.Table;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Microsoft.Extensions.Logging;
 
 namespace Funky.Durables.Activities
 {
     public class InsertFileRecordActivityFunction
     {
-        [FunctionName(nameof(InsertFileRecordActivityFunction))]
-        public async Task<Result> InsertAsync([ActivityTrigger] IDurableActivityContext context,
-            [DurableClient]IDurableClient client)
+        private readonly InsertCustomerDataCommandHandler _commandHandler;
+        private readonly ILogger<InsertFileRecordActivityFunction> _logger;
+        private readonly CloudTable _table;
+
+        public InsertFileRecordActivityFunction(InsertCustomerDataCommandHandler commandHandler)
         {
-            await Task.Delay(TimeSpan.FromSeconds(3));
-            var records = context.GetInput<List<FileRecord>>();
-            
-            //
-            // TODO: Insert records
-            //
-            return Result.Success();
+            _commandHandler = commandHandler;
+        }
+
+        [FunctionName(nameof(InsertFileRecordActivityFunction))]
+        public async Task<Result> InsertAsync([ActivityTrigger] IDurableActivityContext context)
+        {
+            var model = context.GetInput<CustomerDataWriteModel>();
+            var operation = await _commandHandler.ExecuteAsync(model);
+            return operation;
         }
     }
 }
