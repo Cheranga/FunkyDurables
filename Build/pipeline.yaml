@@ -48,7 +48,7 @@ stages:
           - template: 'deploy.yaml'
 
 - stage: TEST
-  dependsOn: TEST
+  dependsOn: DEV
   jobs:
   - deployment: TEST
     variables:
