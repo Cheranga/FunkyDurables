@@ -12,14 +12,14 @@ using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
 namespace Funky.Durables.Orchestrators
 {
-    public class ClassifyOrdersOrchestratorFunction
+    public class CustomerRecordOrchestratorFunction
     {
-        [FunctionName(nameof(ClassifyOrdersOrchestratorFunction))]
+        [FunctionName(nameof(CustomerRecordOrchestratorFunction))]
         public async Task OrchestrateAsync([OrchestrationTrigger]IDurableOrchestrationContext context)
         {
-            var fileRecordsRequest = context.GetInput<FileRecordsRequest>();
+            var fileRecordsRequest = context.GetInput<InsertCustomersRequest>();
 
-            var fileInformation = await context.CallActivityAsync<CustomerFileInformation>(nameof(ClassifyFileRecordsActivityFunction), fileRecordsRequest);
+            var fileInformation = await context.CallActivityAsync<CustomerFileInformation>(nameof(GetClassifyFileRecordsActivityFunction), fileRecordsRequest);
 
             var validRecordsCommand = GetCommand("valid", fileInformation.ValidRecords);
             var invalidRecordsCommand = GetCommand("invalid", fileInformation.InvalidRecords);
@@ -35,7 +35,7 @@ namespace Funky.Durables.Orchestrators
             //var insertValidRecordsOperation = await context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), fileInformation.ValidRecords);
         }
 
-        [Deterministic]
+        
         public InsertCustomerDataCommand GetCommand(string category, List<CustomerFileRecord> records)
         {
             return new InsertCustomerDataCommand

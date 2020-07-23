@@ -12,17 +12,17 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 
 namespace Funky.Durables.Patterns.FunctionChaining
 {
-    public class ClassifyOrdersFunction
+    public class InsertCustomersFunction
     {
-        [FunctionName(nameof(ClassifyOrdersFunction))]
-        public async Task<IActionResult> ClassifyAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "orders")]HttpRequest request,
+        [FunctionName(nameof(InsertCustomersFunction))]
+        public async Task<IActionResult> ClassifyAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "customers")]HttpRequest request,
             [DurableClient]IDurableOrchestrationClient client)
         {
-            var fileRecordsRequest = await request.GetModel<FileRecordsRequest>();
+            var fileRecordsRequest = await request.GetModel<InsertCustomersRequest>();
 
             var instanceId = Guid.NewGuid().ToString("N");
 
-            await client.StartNewAsync(nameof(ClassifyOrdersOrchestratorFunction), instanceId, fileRecordsRequest);
+            await client.StartNewAsync(nameof(CustomerRecordOrchestratorFunction), instanceId, fileRecordsRequest);
 
             var actionResult = await client.WaitForCompletionOrCreateCheckStatusResponseAsync(request, instanceId, TimeSpan.FromSeconds(2));
 

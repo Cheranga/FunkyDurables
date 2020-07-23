@@ -9,9 +9,9 @@ using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
 namespace Funky.Durables.Activities
 {
-    public class GetInsertRecordCommandsActivityFunction
+    public class GetCustomerDataRecordsFunction
     {
-        [FunctionName(nameof(GetInsertRecordCommandsActivityFunction))]
+        [FunctionName(nameof(GetCustomerDataRecordsFunction))]
         public Task<List<CustomerDataWriteModel>> GetWriteModels([ActivityTrigger] IDurableActivityContext context)
         {
             var command = context.GetInput<InsertCustomerDataCommand>();

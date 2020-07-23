@@ -10,19 +10,19 @@ using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
 namespace Funky.Durables.Activities
 {
-    public class ClassifyFileRecordsActivityFunction
+    public class GetClassifyFileRecordsActivityFunction
     {
         private readonly IValidator<CustomerFileRecord> _validator;
 
-        public ClassifyFileRecordsActivityFunction(IValidator<CustomerFileRecord> validator)
+        public GetClassifyFileRecordsActivityFunction(IValidator<CustomerFileRecord> validator)
         {
             _validator = validator;
         }
 
-        [FunctionName(nameof(ClassifyFileRecordsActivityFunction))]
+        [FunctionName(nameof(GetClassifyFileRecordsActivityFunction))]
         public Task<CustomerFileInformation> ClassifyAsync([ActivityTrigger]IDurableActivityContext context)
         {
-            var fileRecordsRequest = context.GetInput<FileRecordsRequest>();
+            var fileRecordsRequest = context.GetInput<InsertCustomersRequest>();
 
             var validRecords = new List<CustomerFileRecord>();
             var invalidRecords = new List<CustomerFileRecord>();
