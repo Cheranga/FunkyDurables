@@ -1,0 +1,12 @@
+parameters:
+  resourceGroupName: ''
+steps:
+- task: AzurePowerShell@5
+  displayName: 'Deleting Deployment Histories'
+  inputs:
+    azureSubscription: $(azureSubscription)
+    ScriptType: InlineScript
+    Inline: |
+     $resourceGroup = '${{parameters.resourceGroupName}}'
+     Get-AzResourceGroupDeployment -ResourceGroupName $resourceGroup | Select-Object -Skip 750 | Remove-AzResourceGroupDeployment
+    preferredAzurePowerShellVersion: 3.1.0

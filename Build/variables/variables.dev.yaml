@@ -1,0 +1,5 @@
+variables:
+- group: FunkyServerlessCommon
+- group: FunkyServerlessDev
+- name: EnvironmentName
+  value: dev

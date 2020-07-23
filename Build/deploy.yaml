@@ -1,0 +1,19 @@
+steps:
+
+- template: 'templates/setupARM.yaml'
+  parameters:        
+    functionAppName: funkydurables
+    operation: 'Validate'   
+
+- template: 'templates/deleteHistory.yaml'
+  parameters:
+    resourceGroupName: 'funkyserverless-$(EnvironmentName)-rg'
+
+- template: 'templates/setupARM.yaml'
+  parameters:        
+    functionAppName: funkydurables
+    operation: 'Incremental'  
+    
+- template: 'templates/deployFunctionApp.yaml'
+  parameters:
+    functionAppName: funkydurables
