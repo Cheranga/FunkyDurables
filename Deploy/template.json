@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "environmentName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the environment."
+      }
+    },
     "appName": {
       "type": "string",
       "metadata": {
@@ -23,11 +29,11 @@
     }
   },
   "variables": {
-    "functionAppName": "[parameters('appName')]",
+    "functionAppName": "[concat(parameters('appName'), parameters('environmentName'))]",
     "hostingPlanName": "[parameters('appName')]",
     "keyVaultName": "[concat(parameters('appName'),'akv')]",
-    "applicationInsightsName": "[parameters('appName')]",
-    "storageAccountName": "[concat(parameters('appName'), 'sg')]",
+    "applicationInsightsName": "[concat(parameters('appName'), parameters('environmentName'),'ins')]",
+    "storageAccountName": "[concat(parameters('appName'), parameters('environmentName'), 'sg')]",
     "storageAccountType": "Standard_GRS",
     "timeZone": "AUS Eastern Standard Time"
   },

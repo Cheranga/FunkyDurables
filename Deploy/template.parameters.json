@@ -7,6 +7,9 @@
         },
         "apiKey": {
             "value": "secure api key" 
+        },
+        "environmentName":{
+            "value": "dev"
         }
     }
 }
