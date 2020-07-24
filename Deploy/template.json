@@ -135,7 +135,8 @@
           "type": "config",
           "name": "appsettings",
           "apiVersion": "2018-11-01",
-          "dependsOn": [            
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",  
             "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
             "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
           ],
