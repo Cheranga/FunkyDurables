@@ -30,7 +30,7 @@
   },
   "variables": {
     "functionAppName": "[concat(parameters('appName'), parameters('environmentName'))]",
-    "hostingPlanName": "[parameters('appName')]",
+    "hostingPlanName": "[contains(parameters('appName'),'-asp')]",
     "keyVaultName": "[concat(parameters('appName'),'akv')]",
     "applicationInsightsName": "[concat(parameters('appName'), parameters('environmentName'),'ins')]",
     "storageAccountName": "[concat(parameters('appName'), parameters('environmentName'), 'sg')]",
@@ -135,8 +135,7 @@
           "type": "config",
           "name": "appsettings",
           "apiVersion": "2018-11-01",
-          "dependsOn": [
-            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
+          "dependsOn": [            
             "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
             "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
           ],
