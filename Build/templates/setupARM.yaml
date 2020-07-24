@@ -17,5 +17,5 @@ steps:
       overrideParameters: |
         -appName "${{parameters.functionAppName}}" 
         -apiKey "$(ApiKey)"        
-        -environmentName "$(EnvironmentName)"                
+        -appEnvironment "$(EnvironmentName)"                
       deploymentMode: '${{parameters.operation}}'

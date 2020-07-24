@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "appName": {
-            "value": "funkydurables"
+            "value": "connections-fp"
+        },
+        "appEnvironment": {
+            "value": "qtrd"
         },
         "apiKey": {
-            "value": "secure api key" 
-        },
-        "environmentName":{
-            "value": "dev"
-        }
+            "value": "TBD"
+        }       
     }
 }
