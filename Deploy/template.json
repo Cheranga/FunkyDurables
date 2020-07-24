@@ -30,7 +30,7 @@
   },
   "variables": {
     "functionAppName": "[concat(parameters('appName'), parameters('environmentName'))]",
-    "hostingPlanName": "[contains(parameters('appName'),'-asp')]",
+    "hostingPlanName": "[concat(parameters('appName'),'-asp')]",
     "keyVaultName": "[concat(parameters('appName'),'akv')]",
     "applicationInsightsName": "[concat(parameters('appName'), parameters('environmentName'),'ins')]",
     "storageAccountName": "[concat(parameters('appName'), parameters('environmentName'), 'sg')]",
