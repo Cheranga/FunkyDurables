@@ -8,7 +8,7 @@
       }
     }
   },
-  "functionTimeout": "10:00:00",
+  "functionTimeout": "00:10:00",
   "extensions": {
     "durableTask": {
       "hubName": "CustomerProcessorHub"
