@@ -26,16 +26,15 @@ namespace Funky.Durables.Orchestrators
 
             var groups = insertCommands.SplitList(1000).ToList();
 
-            //var tasks = new List<Task<Result>>();
+            var tasks = new List<Task<Result>>();
 
             foreach (var @group in groups)
             {
-                await context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), @group);
-                //var task = context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), @group);
-                //tasks.Add(task);
+                var task = context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), @group);
+                tasks.Add(task);
             }
 
-            //await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks);
 
             return Result.Success();
         }
