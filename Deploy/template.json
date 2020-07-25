@@ -36,7 +36,7 @@
     }
   },
   "variables": {
-    "functionAppName": "[concat(parameters('appName'),'-func-agl-',parameters('appEnvironment'))]",
+    "functionAppName": "[concat(parameters('appName'),parameters('appEnvironment'))]",
     "hostingPlanName": "[concat(parameters('appName'),parameters('appEnvironment'),'asp')]",
     "applicationInsightsName": "[concat(parameters('appName'),'ins')]",    
     "keyVaultName": "[concat(parameters('appName'),'-',parameters('appEnvironment'),'-kv')]",
