@@ -25,10 +25,9 @@ namespace Funky.Durables.Patterns.FunctionChaining
     }
 
     public class ProcessCustomerOrchestratorFunction
-    {   
-
+    {
         [FunctionName(nameof(ProcessCustomerOrchestratorFunction))]
-        public  async Task<Result> ProcessAsync([OrchestrationTrigger] IDurableOrchestrationContext context)
+        public async Task<Result> ProcessAsync([OrchestrationTrigger] IDurableOrchestrationContext context)
         {
             var fileName = context.GetInput<string>();
 
@@ -39,27 +38,7 @@ namespace Funky.Durables.Patterns.FunctionChaining
                 return Result.Failure(operation.ErrorMessage);
             }
 
-            var totalRecordCount = operation.Data.Records.Count;
-            if (totalRecordCount >= 20000)
-            {
-                var tasks = new List<Task>();
-                var groups = operation.Data.Records.SplitList(20000);
-                foreach (var @group in groups)
-                {
-                    var task = context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), new InsertCustomersRequest
-                    {
-                        Records = @group
-                    });
-
-                    tasks.Add(task);
-                }
-
-                await Task.WhenAll(tasks);
-            }
-            else
-            {
-                await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), operation.Data);
-            }
+            await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), operation.Data);
 
             return Result.Success();
         }
