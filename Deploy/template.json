@@ -38,7 +38,7 @@
   "variables": {
     "functionAppName": "[concat(parameters('appName'),parameters('appEnvironment'))]",
     "hostingPlanName": "[concat(parameters('appName'),parameters('appEnvironment'),'asp')]",
-    "applicationInsightsName": "[concat(parameters('appName'),'ins')]",    
+    "applicationInsightsName": "[concat(parameters('appName'),'ins')]",
     "keyVaultName": "[concat(parameters('appName'),'-',parameters('appEnvironment'),'-kv')]",
     "storageAccountName": "[toLower(replace(concat(parameters('appName'),parameters('appEnvironment'),'sg'),'-',''))]",
     "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
@@ -124,6 +124,17 @@
           "properties": {
             "value": "[parameters('apiKey')]"
           }
+        },
+        {
+          "type": "secrets",
+          "name": "DatabaseConnectionString",
+          "apiVersion": "2016-10-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]"
+          ],
+          "properties": {
+            "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+          }
         }
       ]
     },
@@ -147,7 +158,8 @@
           "dependsOn": [
             "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
             "[resourceId('Microsoft.KeyVault/vaults/', variables('keyVaultName'))]",
-            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), 'ApiKey')]"
+            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), 'ApiKey')]",
+            "[resourceId('Microsoft.KeyVault/vaults/secrets', variables('keyVaultName'), 'DatabaseConnectionString')]"
           ],
           "properties": {
             "WEBSITE_ENABLE_SYNC_UPDATE_SITE": "true",
@@ -160,6 +172,8 @@
             "FUNCTIONS_WORKER_RUNTIME": "[variables('functionWorkerRuntime')]",
             "InputContainer": "[parameters('inputContainer')]",
             "ApiKey": "[concat('@Microsoft.KeyVault(SecretUri=', reference('ApiKey').secretUriWithVersion, ')')]",
+            "DatabaseConfiguration.ConnectionString": "[concat('@Microsoft.KeyVault(SecretUri=', reference('DatabaseConnectionString').secretUriWithVersion, ')')]",
+            "DatabaseConfiguration.TableName": "Customers",
             "WEBSITE_TIME_ZONE": "[variables('timeZone')]"
           }
         }
