@@ -16,6 +16,7 @@ pr:
   branches:
     include:
     - master
+    - feature/*
 
 variables:
 - name: vmImage
