@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Funky.Durables.Activities;
 using Funky.Durables.Core;
 using Funky.Durables.DataAccess;
+using Funky.Durables.Extensions;
 using Funky.Durables.Orchestrators;
 using Funky.Durables.Requests;
 using Microsoft.Azure.WebJobs;
@@ -33,7 +34,25 @@ namespace Funky.Durables.Patterns.FunctionChaining
 
             var operation = await context.CallActivityAsync<Result<InsertCustomersRequest>>(nameof(ReadCustomerRecordsActivityFunction), fileName);
 
-            await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), operation.Data);
+            if (!operation.Status)
+            {
+                return Result.Failure(operation.ErrorMessage);
+            }
+
+            var totalRecordCount = operation.Data.Records.Count;
+            if (totalRecordCount >= 20000)
+            {
+                var groups = operation.Data.Records.SplitList(20000);
+                foreach (var @group in groups)
+                {
+                    await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), new InsertCustomersRequest
+                    {
+                        Records = @group
+                    });
+                }
+            }
+
+            //await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), operation.Data);
 
             return Result.Success();
         }
