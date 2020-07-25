@@ -42,17 +42,24 @@ namespace Funky.Durables.Patterns.FunctionChaining
             var totalRecordCount = operation.Data.Records.Count;
             if (totalRecordCount >= 20000)
             {
+                var tasks = new List<Task>();
                 var groups = operation.Data.Records.SplitList(20000);
                 foreach (var @group in groups)
                 {
-                    await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), new InsertCustomersRequest
+                    var task = context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), new InsertCustomersRequest
                     {
                         Records = @group
                     });
-                }
-            }
 
-            //await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), operation.Data);
+                    tasks.Add(task);
+                }
+
+                await Task.WhenAll(tasks);
+            }
+            else
+            {
+                await context.CallSubOrchestratorAsync(nameof(CustomerRecordOrchestratorFunction), operation.Data);
+            }
 
             return Result.Success();
         }
