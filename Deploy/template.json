@@ -10,7 +10,7 @@
     },
     "inputContainer": {
       "type": "string",
-      "defaultValue": "sms-billing-inbound",
+      "defaultValue": "customers",
       "metadata": {
         "description": "The input blob storage."
       }
