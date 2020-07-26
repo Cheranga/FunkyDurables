@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dynamitey.DynamicObjects;
-using Funky.Durables.Activities;
 using Funky.Durables.Core;
-using Funky.Durables.DataAccess;
 using Funky.Durables.DataAccess.Commands;
+using Funky.Durables.Functions.Activities;
 using Funky.Durables.Models;
 using Funky.Durables.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Funky.Durables.Orchestrators
+namespace Funky.Durables.Functions.Orchestrators
 {
     public class CustomerRecordOrchestratorFunction
     {
@@ -30,9 +28,6 @@ namespace Funky.Durables.Orchestrators
             var taskInvalidRowRecords = context.CallSubOrchestratorAsync<Result>(nameof(InsertDataOrchestrator), invalidRowRecordsCommand);
 
             await Task.WhenAll(taskValidRecords, taskInvalidRecords, taskInvalidRowRecords);
-
-
-            //var insertValidRecordsOperation = await context.CallActivityAsync<Result>(nameof(InsertFileRecordActivityFunction), fileInformation.ValidRecords);
         }
 
         

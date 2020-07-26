@@ -1,29 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using Funky.Durables.Activities;
+﻿using System.Threading.Tasks;
 using Funky.Durables.Core;
-using Funky.Durables.DataAccess;
-using Funky.Durables.Extensions;
-using Funky.Durables.Orchestrators;
+using Funky.Durables.Functions.Activities;
 using Funky.Durables.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Funky.Durables.Patterns.FunctionChaining
+namespace Funky.Durables.Functions.Orchestrators
 {
-    public class ProcessCustomerClientFunction
-    {
-        [FunctionName(nameof(ProcessCustomerClientFunction))]
-        public async Task ProcessAsync([BlobTrigger("%InputContainer%/{fileName}")]Stream stream, string fileName,
-            [DurableClient]IDurableOrchestrationClient client)
-        {
-            await client.StartNewAsync(nameof(ProcessCustomerOrchestratorFunction), Guid.NewGuid().ToString("N"), fileName);
-        }
-    }
-
     public class ProcessCustomerOrchestratorFunction
     {
         [FunctionName(nameof(ProcessCustomerOrchestratorFunction))]

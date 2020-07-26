@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Funky.Durables.Activities;
 using Funky.Durables.Core;
 using Funky.Durables.DataAccess.Commands;
 using Funky.Durables.DataAccess.Models;
 using Funky.Durables.Extensions;
+using Funky.Durables.Functions.Activities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Funky.Durables.Orchestrators
+namespace Funky.Durables.Functions.Orchestrators
 {
     public class InsertDataOrchestrator
     {

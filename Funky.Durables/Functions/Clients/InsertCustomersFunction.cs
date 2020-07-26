@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Text;
 using System.Threading.Tasks;
 using Funky.Durables.Extensions;
-using Funky.Durables.Orchestrators;
+using Funky.Durables.Functions.Orchestrators;
 using Funky.Durables.Requests;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +9,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 
-namespace Funky.Durables.Patterns.FunctionChaining
+namespace Funky.Durables.Functions.Clients
 {
     public class InsertCustomersFunction
     {

@@ -8,7 +8,7 @@ using Funky.Durables.Requests;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 
-namespace Funky.Durables.Activities
+namespace Funky.Durables.Functions.Activities
 {
     public class GetClassifyFileRecordsActivityFunction
     {

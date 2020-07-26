@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Funky.Durables.Constants;
-using Funky.Durables.Core;
-using Funky.Durables.Requests;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 
-namespace Funky.Durables.Patterns.Monitor
+namespace Funky.Durables.Functions.Clients
 {
     public class FileInformation
     {
