@@ -95,23 +95,5 @@ namespace Funky.Durables.Functions.Clients
         }
     }
 
-    public class DeleteBlobActivityFunction
-    {
-        private readonly ILogger<DeleteBlobActivityFunction> _logger;
-
-        public DeleteBlobActivityFunction(ILogger<DeleteBlobActivityFunction> logger)
-        {
-            _logger = logger;
-        }
-
-        [FunctionName(nameof(DeleteBlobActivityFunction))]
-        public async Task DeleteAsync([ActivityTrigger]IDurableActivityContext context)
-        {
-            var blobName = context.GetInput<string>();
-            await Task.Delay(TimeSpan.FromSeconds(3));
-            //
-            // TODO: Delete the blob from the container
-            //
-        }
-    }
+    
 }
